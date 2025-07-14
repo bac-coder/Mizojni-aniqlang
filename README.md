@@ -1,1 +1,139 @@
 # Mizojni-aniqlang
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <title>Mizoj Testi</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 800px;
+      margin: auto;
+      padding: 30px;
+      background: #fdfdfd;
+    }
+    h1 {
+      color: #2980b9;
+    }
+    label {
+      display: block;
+      margin-left: 15px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 25px;
+      background: #3498db;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    #natija {
+      margin-top: 30px;
+      background: #ecf0f1;
+      padding: 20px;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Mizojni aniqlash testi</h1>
+
+<form id="mizojForm">
+  <!-- Savollar 1 dan 15 gacha -->
+  <p>1. Terini ushlab ko‘rganingizda:</p>
+  <label><input type="radio" name="q1" value="A"> Issiq</label>
+  <label><input type="radio" name="q1" value="B"> Sovuq</label>
+  <label><input type="radio" name="q1" value="C"> Yumshoq</label>
+  <label><input type="radio" name="q1" value="D"> Quruq, dag‘al</label>
+
+  <p>2. Tirnoq ahvoli:</p>
+  <label><input type="radio" name="q2" value="A"> Yumshoq</label>
+  <label><input type="radio" name="q2" value="B"> Qattiq</label>
+  <label><input type="radio" name="q2" value="C"> Qizil rangga moyil</label>
+  <label><input type="radio" name="q2" value="D"> Quruq, uvaluvchan</label>
+
+  <p>3. Uyqu holatingiz:</p>
+  <label><input type="radio" name="q3" value="A"> Uyqu qiyin, erta uyg‘onish</label>
+  <label><input type="radio" name="q3" value="B"> Og‘ir uyqu, sekin uyg‘onish</label>
+  <label><input type="radio" name="q3" value="C"> Uyqu tartibli</label>
+  <label><input type="radio" name="q3" value="D"> Ko‘p uxlaysiz, bosh og‘rig‘i bo‘ladi</label>
+
+  <!-- Savollarni shunga o‘xshab 15 taga to‘ldiring -->
+  <!-- Mana yana 2 ta misol: -->
+
+  <p>4. Faolligingiz qanday?</p>
+  <label><input type="radio" name="q4" value="A"> Juda faol, doim harakatda</label>
+  <label><input type="radio" name="q4" value="B"> O‘rtacha, barqaror</label>
+  <label><input type="radio" name="q4" value="C"> Tezkor, natijaga qiziqasiz</label>
+  <label><input type="radio" name="q4" value="D"> Sokin, ko‘proq o‘ylaysiz</label>
+
+  <p>5. Soch turi qanday?</p>
+  <label><input type="radio" name="q5" value="A"> Qalin va yog‘li</label>
+  <label><input type="radio" name="q5" value="B"> Nam, jilvalanadi</label>
+  <label><input type="radio" name="q5" value="C"> Quruq va jingalak</label>
+  <label><input type="radio" name="q5" value="D"> Nozik va mo‘rt</label>
+
+  <!-- ... davom ettiring 6 dan 15 gacha ... -->
+
+  <button type="submit">Natijani ko‘rish</button>
+</form>
+
+<div id="natija"></div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const form = document.getElementById("mizojForm");
+  const resultDiv = document.getElementById("natija");
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const counts = { A: 0, B: 0, C: 0, D: 0 };
+    const totalQuestions = 15;
+
+    for (let i = 1; i <= totalQuestions; i++) {
+      const answer = form.querySelector(`input[name="q${i}"]:checked`);
+      if (answer && counts.hasOwnProperty(answer.value)) {
+        counts[answer.value]++;
+      }
+    }
+
+    let topType = null;
+    let topCount = 0;
+
+    for (let key in counts) {
+      if (counts[key] > topCount) {
+        topType = key;
+        topCount = counts[key];
+      }
+    }
+
+    const percent = Math.round((topCount / totalQuestions) * 100);
+
+    let description = "";
+    if (topType === "A") {
+      description = "Sizda <strong>issiq va ho‘l mizoj</strong> – kuchli, tez harakatlanadigan, g‘azabli tabiat.";
+    } else if (topType === "B") {
+      description = "Sizda <strong>sovuq va ho‘l mizoj</strong> – sokin, barqaror, hissiyotlarga boy.";
+    } else if (topType === "C") {
+      description = "Sizda <strong>issiq va quruq mizoj</strong> – tezkor, ziyrak, jasur, lekin ba’zan asabiy.";
+    } else if (topType === "D") {
+      description = "Sizda <strong>sovuq va quruq mizoj</strong> – kamharakat, chuqur fikrlovchi, jiddiy shaxs.";
+    } else {
+      description = "Iltimos, barcha savollarga javob bering.";
+    }
+
+    resultDiv.innerHTML = `
+      <h3>Natija:</h3>
+      <p><strong>Eng ko‘p tanlangan tur: ${topType}</strong></p>
+      <p><strong>${percent}%</strong> savollarda shu tur tanlangan</p>
+      <p>${description}</p>
+    `;
+  });
+});
+</script>
+
+</body>
+</html>
